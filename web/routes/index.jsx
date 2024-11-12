@@ -1,11 +1,12 @@
-import { Banner, BlockStack, Box, Card, Layout, Link, Page, Text, DataTable, Button } from "@shopify/polaris";
 import React, { useState, useEffect } from 'react';
+import { Banner, BlockStack, Box, Card, Layout, Link, Page, Text, DataTable, Button } from "@shopify/polaris";
 import { useNavigate } from "react-router-dom";
-import { api } from "../api";
+import { Provider as GadgetProvider } from "@gadgetinc/react-shopify-app-bridge"; // Import the GadgetProvider
+import { api } from "../api"; // Ensure you import your API client
 
 export default function ClassList() {
   const [classes, setClasses] = useState([]);
-  const navigate = useNavigate(); // Hook to navigate
+  const navigate = useNavigate(); // Hook to navigate 
 
   // Fetch class data
   useEffect(() => {
@@ -22,7 +23,6 @@ export default function ClassList() {
 
   // Custom renderer for "name" column
   const handleRowClick = (row) => {
-    // Navigate to class details page
     const classId = String(row.id);
     navigate(`/class/${row.id}`); // Assuming row has a unique "id"
   };
@@ -64,19 +64,26 @@ export default function ClassList() {
     </Button>
   ]);
 
+  // Wrap the component with GadgetProvider
   return (
-    <Page title="Classes">
-      <Layout>
-        <Layout.Section>
-          <Card>
-            <DataTable
-              columnContentTypes={['text', 'text', 'numeric', 'text', 'text']}
-              headings={['Name', 'Date', 'Maximum Enrollees', 'Actions', 'Actions']}
-              rows={rows}
-            />
-          </Card>
-        </Layout.Section>
-      </Layout>
-    </Page>
+    <GadgetProvider
+      type="Embedded"
+      shopifyApiKey="e00dea3c19921a4267c3e3ab8925514a"
+      api={api} // Pass the API instance
+    >
+      <Page title="Classes">
+        <Layout>
+          <Layout.Section>
+            <Card>
+              <DataTable
+                columnContentTypes={['text', 'text', 'numeric', 'text', 'text']}
+                headings={['Name', 'Date', 'Maximum Enrollees', 'Actions', 'Actions']}
+                rows={rows}
+              />
+            </Card>
+          </Layout.Section>
+        </Layout>
+      </Page>
+    </GadgetProvider>
   );
 }

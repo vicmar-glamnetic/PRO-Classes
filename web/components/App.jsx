@@ -1,8 +1,4 @@
-import {
-  AppType,
-  Provider as GadgetProvider,
-  useGadget,
-} from "@gadgetinc/react-shopify-app-bridge";
+import { AppType, Provider as GadgetProvider, useGadget } from "@gadgetinc/react-shopify-app-bridge";
 import { NavMenu } from "@shopify/app-bridge-react";
 import { Box, Card, Page, Spinner, Text } from "@shopify/polaris";
 import { useEffect } from "react";
@@ -19,8 +15,8 @@ import {
 import { api } from "../api";
 import AboutPage from "../routes/createClass";
 import Index from "../routes/index";
-import ClassDetails from "../routes/classDetails"; // import the class details page
-import EditClassDetails from '../routes/editClassDetails'; // Your edit class details component
+import ClassDetails from "../routes/classDetails";
+import EditClassDetails from '../routes/editClassDetails';
 import "./App.css";
 
 function Error404() {
@@ -62,7 +58,7 @@ function Layout() {
   return (
     <GadgetProvider
       type={AppType.Embedded}
-      shopifyApiKey={window.gadgetConfig.apiKeys.shopify}
+      shopifyApiKey={window.gadgetConfig.apiKeys.shopify} // Assumes the API key is in your gadgetConfig
       api={api}
     >
       <AuthenticatedApp />
@@ -71,8 +67,8 @@ function Layout() {
 }
 
 function AuthenticatedApp() {
-  // we use `isAuthenticated` to render pages once the OAuth flow is complete!
   const { isAuthenticated, loading } = useGadget();
+
   if (loading) {
     return (
       <div
@@ -88,6 +84,7 @@ function AuthenticatedApp() {
       </div>
     );
   }
+
   return isAuthenticated ? <EmbeddedApp /> : <UnauthenticatedApp />;
 }
 
@@ -96,9 +93,7 @@ function EmbeddedApp() {
     <>
       <Outlet />
       <NavMenu>
-        <Link to="/" rel="home">
-          Shop Information
-        </Link>
+        <Link to="/" rel="home">Shop Information</Link>
         <Link to="/about">Create Class</Link>
       </NavMenu>
     </>
@@ -116,9 +111,7 @@ function UnauthenticatedApp() {
           <Box paddingBlockStart="200">
             <Text variant="bodyLg" as="p">
               Edit this page:{" "}
-              <a
-                href={`/edit/${process.env.GADGET_PUBLIC_APP_ENV}/files/web/components/App.jsx`}
-              >
+              <a href={`/edit/${process.env.GADGET_PUBLIC_APP_ENV}/files/web/components/App.jsx`}>
                 web/components/App.jsx
               </a>
             </Text>

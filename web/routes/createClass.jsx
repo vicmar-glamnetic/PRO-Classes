@@ -70,6 +70,12 @@ function ClassCreationForm() {
             <FormLayout>
               <Text variant="headingLg">Class Information</Text>
               <TextField
+                label="Class Name"
+                value={formData.name}
+                onChange={handleChange("name")}
+                autoComplete="off"
+              />
+              <TextField
                 label="Class Date"
                 type="date"
                 value={formData.date}
@@ -92,12 +98,6 @@ function ClassCreationForm() {
                 type="number"
                 value={formData.maximumEnrollees}
                 onChange={handleChange("maximumEnrollees")}
-                autoComplete="off"
-              />
-              <TextField
-                label="Class Name"
-                value={formData.name}
-                onChange={handleChange("name")}
                 autoComplete="off"
               />
               <Select
